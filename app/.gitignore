@@ -1,0 +1,13 @@
+app/build/
+*/build/
+!gradle-wrapper.jar
+
+# Gradle
+.gradle/
+
+# Android Studio
+.idea/
+*.iml
+*.ipr
+*.iws
+.local.properties
