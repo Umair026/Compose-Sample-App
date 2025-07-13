@@ -57,28 +57,31 @@ import com.umair.core.common.components.ButtonType
 import com.umair.core.common.components.CustomAppBarContent
 import com.umair.core.common.components.CustomTextFieldWithDropdown
 import com.umair.core.common.components.SwitchWithText
+import com.umair.core.common.extensions.safeNavigate
+import com.umair.core.common.navigation.NavigationRoutes
 import com.umair.core.common.theme.GettingStartWithComposeTheme
 import com.umair.core.common.theme.Pink40
 import com.umair.core.common.theme.Purple40
+
+data class Model(val label: String,val onClick: () -> Unit,val color: Color)
 
 @Composable
 fun UIComponent(
     modifier: Modifier = Modifier,
     navController: NavHostController
 ) {
-    data class Model(val label: String,val onClick: () -> Unit,val color: Color)
     val list = listOf<Model>(
         Model(label = "LoginApp", color = Purple40, onClick = {
-            navController.navigate("LoginApp")
+            navController.safeNavigate(NavigationRoutes.LOGIN)
         }),
         Model(label = "TweetsApp", color = Pink40, onClick = {
-            navController.navigate("TweetsApp")
+            navController.safeNavigate(NavigationRoutes.TWEET_GRAPH)
         }),
         Model(label = "ChangeTheme",color = Pink40, onClick = {
-        navController.navigate("ChangeTheme")
+        navController.safeNavigate("ChangeTheme")
     }),
         Model(label = "QuotesApp",color = Purple40, onClick = {
-        navController.navigate("QuotesApp")
+        navController.safeNavigate(NavigationRoutes.QUOTES_GRAPH)
     })
     )
     AppContent(
@@ -95,7 +98,11 @@ fun UIComponent(
                     .padding(8.dp)
             ) {
                 itemsIndexed(list) { _, item ->
-                    CardView(color = item.color, label = item.label, onClick = item.onClick)
+                    CardView(
+                        color = item.color,
+                        label = item.label,
+                        onClick = item.onClick
+                    )
                 }
             }
 
@@ -143,6 +150,7 @@ fun ChangeTheme(modifier: Modifier = Modifier) {
                 .background(MaterialTheme.colorScheme.background)
                 .verticalScroll(verticalScroll),
         ) {
+
             var isChecked by remember { mutableStateOf(false) }
             SwitchWithText(
                 checked = isChecked,
@@ -163,6 +171,11 @@ fun ChangeTheme(modifier: Modifier = Modifier) {
 
         }
     }
+}
+
+@Composable
+fun TabViewComposable() {
+    NavigationBarExample()
 }
 
 @Composable

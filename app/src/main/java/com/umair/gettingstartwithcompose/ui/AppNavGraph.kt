@@ -4,55 +4,47 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
+import androidx.navigation.navigation
+import com.umair.core.common.navigation.NavigationRoutes
 import com.umair.feature.login.LoginView
-import com.umair.feature.quotes.dataManager.DataManager
-import com.umair.feature.quotes.screens.QuoteListScreen
-import com.umair.features.tweets.TweetsCategoryScreen
-import com.umair.features.tweetsDetails.TweetDetailsScreen
-import com.umair.gettingstartwithcompose.ui.components.UIComponent
+import com.umair.feature.quotes.quoteNavGraph
+import com.umair.features.tweetNavGraph
 import com.umair.gettingstartwithcompose.ui.components.ChangeTheme
+import com.umair.gettingstartwithcompose.ui.components.UIComponent
 
 @Composable
 fun AppNavGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController,
 ) {
-    NavHost(navController = navController, startDestination = "UIComponent") {
-        composable(route = "UIComponent") {
-            UIComponent(modifier = Modifier, navController)
-        }
-        composable(route = "LoginApp") {
-            LoginView(LocalContext.current)
-        }
-        composable(route = "TweetsApp") {
-            TweetsCategoryScreen(modifier = Modifier, navController = navController) {
-                navController.navigate("TweetsDetail/$it")
+    NavHost(navController = navController, startDestination = "ui-graph") {
+
+        navigation(
+            route = "ui-graph",
+            startDestination = NavigationRoutes.UI_COMPONENTS
+        ) {
+            composable(route = NavigationRoutes.UI_COMPONENTS) {
+                UIComponent(
+                    modifier = Modifier,
+                    navController = navController
+                )
+            }
+            composable(route = NavigationRoutes.LOGIN) {
+                LoginView(
+                    context = LocalContext.current
+                )
+            }
+            composable(route = "ChangeTheme") {
+                ChangeTheme(modifier = Modifier)
             }
         }
-        composable(
-            route = "TweetsDetail/{category}",
-            arguments = listOf(
-                navArgument(name = "category") {
-                    type = NavType.StringType
-                }
-            )
-        ) {
-            /*
-            another way to pass argument
-
-            val category = it.arguments?.getString("category")
-            TweetDetailsScreen(modifier = Modifier, category)*/
-            TweetDetailsScreen(modifier = Modifier, navController = navController)
-        }
-        composable(route = "ChangeTheme") {
-            ChangeTheme(modifier = Modifier)
-        }
-        composable(route = "QuotesApp") {
-            QuoteListScreen { DataManager.switchPages(it) }
-        }
+        /*
+        * Each feature module exposes its own navigation graph
+        *
+        * */
+        tweetNavGraph(navController)
+        quoteNavGraph(navController)
     }
 }

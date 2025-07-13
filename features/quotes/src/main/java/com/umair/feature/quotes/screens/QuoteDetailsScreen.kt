@@ -22,13 +22,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.umair.feature.quotes.dataManager.DataManager
+import androidx.navigation.NavHostController
+import com.umair.core.common.extensions.empty
 import com.umair.feature.quotes.dataManager.Quote
 
 @Composable
-fun QuoteDetails(quote: Quote) {
+fun QuoteDetails(quote: Quote?, navController: NavHostController) {
     BackHandler {
-        DataManager.switchPages(null)
+        navController.popBackStack()
     }
     Box(
         contentAlignment = Alignment.Center,
@@ -60,9 +61,8 @@ fun QuoteDetails(quote: Quote) {
                     modifier = Modifier.size(60.dp)
                 )
                 Spacer(Modifier.height(10.dp))
-                Text(text = quote.text)
+                Text(text = quote?.text ?: String.empty())
                 Spacer(Modifier.height(10.dp))
-
             }
         }
     }

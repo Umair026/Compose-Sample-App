@@ -15,9 +15,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.umair.feature.quotes.R
 import com.umair.feature.quotes.dataManager.DataManager
-import com.umair.feature.quotes.dataManager.Pages
 import com.umair.feature.quotes.dataManager.Quote
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +25,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun QuoteListScreen(onclick: (Quote) -> Unit) {
+fun QuoteListScreen(onclick: (Quote) -> Unit, navController: NavHostController) {
 
     LaunchedEffect(Unit) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -35,11 +35,7 @@ fun QuoteListScreen(onclick: (Quote) -> Unit) {
     }
 
     if (DataManager.isQuotesLoaded.value) {
-        if (DataManager.currentPage.value == Pages.LISTING) {
-            QuoteListContent(onclick)
-        } else {
-            DataManager.currentQuote?.let { QuoteDetails(it) }
-        }
+        QuoteListContent(onclick)
     }
 }
 

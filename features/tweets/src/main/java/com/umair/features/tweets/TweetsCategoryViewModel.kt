@@ -71,6 +71,7 @@ sealed class UIState {
 data class TweetsUiState(
     val isLoading: Boolean = false,
     val categories: List<String>? = null,
+    val tweet: List<Tweet>? = null,
     val error: Error? = null
 )
 
