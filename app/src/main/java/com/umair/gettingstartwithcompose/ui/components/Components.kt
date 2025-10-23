@@ -82,6 +82,9 @@ fun UIComponent(
     }),
         Model(label = "QuotesApp",color = Purple40, onClick = {
         navController.safeNavigate(NavigationRoutes.QUOTES_GRAPH)
+    }),
+        Model(label = "Profile",color = Purple40, onClick = {
+        navController.safeNavigate(NavigationRoutes.PROFILE)
     })
     )
     AppContent(

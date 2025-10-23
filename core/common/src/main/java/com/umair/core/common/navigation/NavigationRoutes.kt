@@ -16,6 +16,7 @@ object NavigationRoutes {
     const val QUOTES_GRAPH = "quote-app-graph"
     const val QUOTE_LIST = "quote-list"
     const val QUOTE_DETAIL = "quote-detail"
+    const val PROFILE = "user-profile"
 }
 
 /*

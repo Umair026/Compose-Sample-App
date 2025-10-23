@@ -9,6 +9,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.umair.core.common.extensions.safeNavigate
 import com.umair.core.common.navigation.NavigationRoutes
+import com.umair.features.demo.GetUserProfile
 import com.umair.features.tweets.TweetsCategoryScreen
 import com.umair.features.tweetsDetails.TweetDetailsScreen
 
@@ -40,6 +41,9 @@ fun NavGraphBuilder.tweetNavGraph(navController: NavHostController) {
                     }
                 })
             }
+        }
+        composable(NavigationRoutes.PROFILE) {
+            GetUserProfile(navController)
         }
     }
 }
