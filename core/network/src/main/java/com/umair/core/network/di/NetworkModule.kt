@@ -2,6 +2,7 @@ package com.umair.core.network.di
 
 import com.umair.core.network.ApiServices
 import com.umair.core.network.interceptor.EncryptionInterceptor
+import com.umair.core.network.interceptor.ErrorInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -39,6 +40,7 @@ class NetworkModule {
     fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)// Add the logging interceptor
+            .addInterceptor(ErrorInterceptor())
             .addInterceptor(EncryptionInterceptor())
             // You can add other interceptors here (e.g., for auth tokens)
             // .readTimeout(60, TimeUnit.SECONDS) // Optional: Set timeouts

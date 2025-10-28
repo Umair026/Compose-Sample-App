@@ -54,7 +54,7 @@ class EncryptionInterceptor : Interceptor {
                 proceedResponse = Response.Builder()
                     .request(request)
                     .protocol(Protocol.HTTP_1_1)
-                    .code(200)
+                    .code(400)
                     .message("OK (mocked)")
                     //.code(500)
                     .message("Mock network exception")
@@ -68,19 +68,23 @@ class EncryptionInterceptor : Interceptor {
             proceedResponse = chain.proceed(request)
         }
 
-        val responseBody = proceedResponse.body ?: return proceedResponse
-        val contentType = responseBody.contentType()
-        val bodyString = responseBody.string()
+        if(proceedResponse.isSuccessful) {
+            val responseBody = proceedResponse.body ?: return proceedResponse
+            val contentType = responseBody.contentType()
+            val bodyString = responseBody.string()
 
-        val decryptedBodyString = try {
-            EncryptionUtils.decrypt(bodyString)
-        } catch (e: Exception) {
-            bodyString // fallback if not encrypted
+            val decryptedBodyString = try {
+                EncryptionUtils.decrypt(bodyString)
+            } catch (e: Exception) {
+                bodyString // fallback if not encrypted
+            }
+
+            return proceedResponse.newBuilder()
+                .body(decryptedBodyString.toResponseBody(contentType))
+                .build()
         }
 
-        return proceedResponse.newBuilder()
-            .body(decryptedBodyString.toResponseBody(contentType))
-            .build()
+        return proceedResponse
     }
 }
 
